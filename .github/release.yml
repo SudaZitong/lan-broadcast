@@ -1,0 +1,17 @@
+# GitHub 自动生成 Release 说明时的分组
+changelog:
+  exclude:
+    labels:
+      - ignore-for-release
+  categories:
+    - title: 新功能
+      labels:
+        - enhancement
+        - feature
+    - title: 修复
+      labels:
+        - bug
+        - fix
+    - title: 其他
+      labels:
+        - "*"

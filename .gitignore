@@ -1,0 +1,72 @@
+# Miscellaneous
+*.class
+*.log
+*.err
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.build/
+.buildlog/
+.history
+.svn/
+.swiftpm/
+migrate_working_dir/
+
+# IntelliJ / IDE
+*.iml
+*.ipr
+*.iws
+.idea/
+.vscode/
+
+# Flutter / Dart / Pub
+**/doc/api/
+**/ios/Flutter/.last_build_id
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+/build/
+/coverage/
+
+# 以前网吧便携环境：整份 SDK 不要进仓库
+/flutter/
+/git/
+/jdk/
+/android_sdk/
+
+# 本地编译产物（保留在磁盘上，不提交）
+/0A产物！！！！！/
+/lan_broadcast.apk
+/lan_broadcast_windows/
+
+# Visual Studio Build Tools 安装器残留
+vs_BuildTools.exe
+vs_install.log
+vs_install_err.log
+build_output.txt
+analyze.log
+do_build_win_err.log
+do_build_win_out.log
+
+# Symbolication / obfuscation
+app.*.symbols
+app.*.map.json
+
+# Android
+/android/app/debug
+/android/app/profile
+/android/app/release
+/android/.gradle/
+/android/.kotlin/
+/android/local.properties
+key.properties
+**/*.keystore
+**/*.jks
+
+# Windows / Linux generated
+**/windows/flutter/ephemeral/
+**/linux/flutter/ephemeral/
