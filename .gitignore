@@ -13,7 +13,7 @@
 .swiftpm/
 migrate_working_dir/
 
-# IntelliJ / IDE
+# IDE
 *.iml
 *.ipr
 *.iws
@@ -32,25 +32,17 @@ migrate_working_dir/
 /build/
 /coverage/
 
-# 以前网吧便携环境：整份 SDK 不要进仓库
+# Local toolchains (not part of source)
 /flutter/
 /git/
 /jdk/
 /android_sdk/
 
-# 本地编译产物（保留在磁盘上，不提交）
+# Local build output
 /0A产物！！！！！/
 /lan_broadcast.apk
 /lan_broadcast_windows/
-
-# Visual Studio Build Tools 安装器残留
 vs_BuildTools.exe
-vs_install.log
-vs_install_err.log
-build_output.txt
-analyze.log
-do_build_win_err.log
-do_build_win_out.log
 
 # Symbolication / obfuscation
 app.*.symbols
@@ -67,6 +59,6 @@ key.properties
 **/*.keystore
 **/*.jks
 
-# Windows / Linux generated
+# Generated
 **/windows/flutter/ephemeral/
 **/linux/flutter/ephemeral/

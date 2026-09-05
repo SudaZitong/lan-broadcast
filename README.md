@@ -1,86 +1,63 @@
 # 局域网喊话
 
-同 Wi-Fi / 局域网里的轻量喊话工具。消息走 UDP 组播，不经过服务器，打开就能说。
+基于 UDP 组播的局域网即时通讯。无需服务器、无需账号，同一网段内的 Android 与 Windows 设备可直接收发文本。
 
-支持 **Android** 和 **Windows**。
+## 功能
 
-## 做什么用
+- 文本消息，协议仅含 `name`、`msg` 两个字段
+- 按昵称哈希为气泡着色
+- 昵称本地持久化
+- Android 以后台前台服务持续接收，并发送系统通知
+- 网络切换或断线后自动重新加入组播，并在会话中提示
 
-在教室、机房、宿舍同一网段里，互相发一句短消息。没有账号，没有云，断网也没关系——只要还在同一个局域网。
+组播不能跨网段、不能跨 VLAN，设备必须接在同一二层网络。
 
-- 组播地址：`239.255.255.155:1556`
-- 消息体只有两个字段：`name` + `msg`（JSON / UTF-8）
-- 昵称按名字哈希上色，自己的气泡和别人的不一样
-- 昵称会记在本地
-- Android 后台用前台服务继续收消息，并弹出通知
-- 切网 / 断线时会在聊天里插一条系统提示，并重新加入组播
+## 协议
 
-组播默认**不跨网段、不跨 VLAN**。电脑连校园网、手机连热点，互相看不见是正常的。
+| 项 | 值 |
+| --- | --- |
+| 组播地址 | `239.255.255.155` |
+| 端口 | `1556` |
+| 编码 | UTF-8 JSON：`{"name":"...","msg":"..."}` |
 
-## 下载安装包
+## 安装
 
-每次打上 `v*` 标签并推送到 GitHub，Actions 会自动：
+从 [Releases](https://github.com/SudaZitong/lan-broadcast/releases) 下载：
 
-1. 编译 Android APK 和 Windows 绿色包
-2. 用提交记录生成 Release 说明
-3. 把安装包挂到 [Releases](https://github.com/SudaZitong/lan-broadcast/releases)
+- Android：`lan_broadcast-vX.Y.Z-android.apk`
+- Windows：`lan_broadcast-vX.Y.Z-windows-x64.zip`，解压后运行 `lan_broadcast.exe`
 
-也可以在仓库的 **Actions** 页手动跑 `Release` 工作流，只出构建产物、不打正式版。
+当前构建使用 debug 签名，仅供自用，不适合上架应用商店。
 
-## 本地开发
+## 从源码构建
 
-需要本机已安装 [Flutter](https://docs.flutter.dev/get-started/install)（stable，Dart ≥ 3.12）。
+需要 [Flutter](https://docs.flutter.dev/get-started/install) stable（Dart ≥ 3.12）。Windows 还需 Visual Studio 的「使用 C++ 的桌面开发」工作负载。
 
 ```bash
 flutter pub get
 flutter run
 ```
 
-只编安装包：
+发行包：
 
 ```bash
 flutter build apk --release
 flutter build windows --release
 ```
 
-Windows 编译路径里不要有中文。如果项目在 `局域网喊话app` 这种目录下，先建一个英文 junction 再编：
+Windows 工程路径请使用英文。路径含中文时，MSBuild 可能无法正确读取工程文件。
 
-```powershell
-$root = (Get-Item -LiteralPath .).FullName
-$parent = Split-Path $root
-$junction = Join-Path $parent "lan_broadcast"
-if (-not (Test-Path $junction)) {
-    New-Item -ItemType Junction -Path $junction -Target $root | Out-Null
-}
-Set-Location $junction
-flutter build windows --release
-```
+## 发布
 
-## 自己发一版
-
-改完代码、版本号写在 `pubspec.yaml` 的 `version:`（例如 `1.0.1+2`），然后：
+推送 `v*` 标签后，GitHub Actions 会编译 Android APK 与 Windows 压缩包，根据提交记录生成说明，并创建 [GitHub Release](https://github.com/SudaZitong/lan-broadcast/releases)。
 
 ```bash
 git tag v1.0.1
 git push origin v1.0.1
 ```
 
-GitHub 会自己建 Release。说明文字来自这次 tag 相对上一版之间的提交。
+也可在仓库 Actions 中手动运行 `Release` 工作流，只构建、不发布。
 
-## 项目结构
+## License
 
-```
-lib/
-  main.dart                      单页聊天 UI
-  models/lan_message.dart        消息：name + msg
-  services/lan_broadcaster.dart  UDP 组播（Android 走 Kotlin 服务，桌面走 Dart socket）
-  services/notification_service.dart
-  utils/user_palette.dart        昵称哈希配色
-android/app/src/main/kotlin/.../LanBroadcastService.kt
-```
-
-更完整的设计说明和网吧环境踩坑见 [HANDOFF.md](HANDOFF.md)。
-
-## 许可
-
-MIT。个人小工具，随便用。
+[MIT](LICENSE)
